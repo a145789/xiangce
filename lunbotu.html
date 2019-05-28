@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播图</title>
+    <style>
+        body{background: linear-gradient(to bottom right, red , blue);height: 100%;width:100%;}
+        *{margin: 0;padding: 0}
+        #item{height: 609px;width: 609px;margin: 5px auto}
+        #item .imgq{height: 191px;width: 191px;margin: 3px;box-shadow: 0px 0px 20px #fff;border: 1px solid #eee}
+        #zhezhao{height: 100%;width: 100%;position: absolute;top: 0;display: none;z-index: 5;opacity: 0;}
+        #zhezhao .btnle,#zhezhao .btngl{height: 80px;width: 80px;position: absolute;background: #fff;opacity: 0.9;bottom: 46%;border-radius: 20px;color: #999;font-size: 50px;line-height: 80px;text-align: center;font-weight: 900;cursor:pointer;box-shadow: 0px 0px 20px #fff;z-index: 20}
+        #zhezhao .btnle{left: 100px;}
+        #zhezhao .btngl{right:100px;}
+        .buu{height: 100%;width: 100%;position:absolute;top: 0;background: #000;opacity: 0;display: none}
+        #zhezhao .imge{height: 400px;width: 600px;position: absolute;top:100px;left: 370px;opacity: 1;z-index: 100;}
+    </style>
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+    <div id="item">
+        <img src="img/enjing/1.jpg" alt="" class="imgq" value="1">
+        <img src="img/jinsuo/1.jpg" alt="" class="imgq" value="2">
+        <img src="img/juju/1.jpg" alt="" class="imgq" value="3">
+        <img src="img/linyun/1.jpg" alt="" class="imgq" value="4">
+        <img src="img/liuyifei/1.jpg" alt="" class="imgq" value="5">
+        <img src="img/neitian/1.jpg" alt="" class="imgq" value="6">
+        <img src="img/owada/1.jpg" alt="" class="imgq" value="7">
+        <img src="img/piaoxin/1.jpg" alt="" class="imgq" value="8">
+        <img src="img/xuamya/1.jpg" alt="" class="imgq" value="9">
+    </div>
+    <div id="zhezhao">
+        <div class="btnle"><</div>
+        <div class="btngl">&gt;</div>
+        
+    </div>
+    <div class="buu"></div>
+    <script>
+        window.onload = function(){
+            var index = 0;
+            $("#item .imgq").click(function(){
+                index = 0;
+                $('#zhezhao').css('display','block');
+                $('.buu').css('display','block');
+                $('.buu').animate({opacity : '0.8'},1000);
+                $('#zhezhao').animate({opacity : '1'},1000);
+                var ind = $(this).attr('src').substr(0,$(this).attr('src').indexOf("1"));
+                for(var i = 1;i < 6 ;i ++)
+                    $('#zhezhao').append('<img src="'+ ind + i + '.jpg" class="imge">');
+                lunhuan();
+            });
+            
+            function lunhuan(){
+                $('#zhezhao .imge').css('display','none');
+                $('.imge:eq('+ index + ')').css('display','block');
+            }
+            function lunle(){
+                var ind;
+                if(index == 4){
+                    ind = 0;
+                }else{
+                    ind = index + 1
+                }
+                $('.imge:eq('+ ind + ')').css('display','block');
+                $('.imge:eq('+ ind + ')').css('z-index','1000');
+                $('.imge:eq('+ index + ')').animate({left : 40},500,function(){
+                    $('.imge:eq('+ index + ')').css('z-index','1000');
+                    $('.imge:eq('+ index + ')').animate({left : 370},500);
+                });
+                $('.imge:eq('+ ind + ')').animate({left : 690},500,function(){
+                    $('.imge:eq('+ ind + ')').css('z-index','100');
+                    $('.imge:eq('+ ind + ')').animate({left : 370},500,function(){
+                        $('.imge:eq('+ ind + ')').css('display','none');
+                    })
+                });
+            }
+            function lunri(){
+                var ind;
+                if(index == 0){
+                    ind = 4;
+                }else{
+                    ind = index - 1
+                }
+                $('.imge:eq('+ ind + ')').css('display','block');
+                $('.imge:eq('+ ind + ')').css('z-index','1000');
+                $('.imge:eq('+ ind + ')').animate({left : 40},500,function(){
+                    $('.imge:eq('+ ind + ')').css('z-index','100');
+                    $('.imge:eq('+ ind + ')').animate({left : 370},500,function(){
+                        $('.imge:eq('+ ind + ')').css('display','none');
+                    });
+                });
+                $('.imge:eq('+ index + ')').animate({left : 690},500,function(){
+                    $('.imge:eq('+ index + ')').css('z-index','1000');
+                    $('.imge:eq('+ index + ')').animate({left : 370},500)
+                });
+            }
+            $('#zhezhao').click(function(){
+                $('#zhezhao').animate({opacity : '0'},800,function(){
+                    $('#zhezhao .imge').remove();
+                });
+                $('.buu').animate({opacity : '0'},800,function (){
+                    $('#zhezhao').css('display','none');
+                    $('.buu').css('display','none');
+                });
+            })
+            $('#zhezhao .btnle').click(function(){
+                index --;
+                if(index == -1){
+                    index = 4;
+                }
+                lunhuan();
+                lunle()
+                return false;
+            })
+            $('#zhezhao .btngl').click(function(){
+                index ++;
+                if(index == 5){
+                    index = 0;
+                }
+                lunhuan();
+                lunri()
+                return false;
+            })
+        }
+        //获取值
+        
+    </script>
+</body>
+</html>
